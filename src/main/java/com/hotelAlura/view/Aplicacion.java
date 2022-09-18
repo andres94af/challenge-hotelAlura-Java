@@ -2,6 +2,8 @@ package com.hotelAlura.view;
 
 import java.sql.Connection;
 
+import javax.swing.JOptionPane;
+
 import com.hotelAlura.DAO.HuespedDAO;
 import com.hotelAlura.DAO.ReservaDAO;
 import com.hotelAlura.DAO.UsuarioDAO;
@@ -18,9 +20,8 @@ public class Aplicacion {
 		ReservaDAO reserva = new ReservaDAO(con);
 		UsuarioDAO usuario = new UsuarioDAO(con);
 		Controllers controllers = new Controllers();
-		
-		System.out.println("Bienvenido!");
-		System.out.println("Por favor logueese");
+		JOptionPane.showMessageDialog(null, "  Bienvenido al Hotel Alura!\nPara loguearse pulse aceptar",
+				  "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 		
 		usuario.validarUsuario();
 		

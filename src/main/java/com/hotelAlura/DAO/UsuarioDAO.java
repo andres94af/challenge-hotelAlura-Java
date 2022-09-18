@@ -6,20 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class UsuarioDAO {
 
 	private Connection con;
 	static int intentos = 0;
-	
+
 	public UsuarioDAO(Connection con) {
 		this.con = con;
 	}
-	
+
 	public void validarUsuario() {
-		System.out.println("Usuario:");
-		String datoObtenidoUsuario = new Scanner(System.in).nextLine();
-		System.out.println("Contraseña:");
-		String datoobtenidoContraseña = new Scanner(System.in).nextLine();
+		String datoObtenidoUsuario = JOptionPane.showInputDialog("Usuario:");
+		String datoobtenidoContraseña = JOptionPane.showInputDialog("Contraseña:");
 
 		try {
 			final PreparedStatement st = con.prepareStatement("SELECT NOMBRE_USUARIO, CONTRASEÑA FROM USUARIOS");
@@ -32,22 +32,24 @@ public class UsuarioDAO {
 					String contraseña = resultSet.getString("CONTRASEÑA");
 
 					if (datoObtenidoUsuario.equals(usuario) && datoobtenidoContraseña.equals(contraseña)) {
-						System.out.println("Se logueo correctamente");
+						JOptionPane.showMessageDialog(null, "Se logueo correctamente!",
+								  "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
 				}
-					if (intentos == 2) {
-						System.out.println("No puede seguir intentando");
-						System.exit(0);
-					} else {
-						System.out.println("Usuario o contraseña invalidos. Intente de nuevo.");
-						intentos++;
-						validarUsuario();
-					}
+				if (intentos == 2) {
+					JOptionPane.showMessageDialog(null, "No puede seguir intentando.\n    Se cerrara el programa",
+							  "Hotel Alura", JOptionPane.ERROR_MESSAGE);
+					System.exit(0);
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario o contraseña invalidos. Intente de nuevo.","Hotel Alura", JOptionPane.WARNING_MESSAGE);
+					intentos++;
+					validarUsuario();
+				}
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }
