@@ -19,7 +19,7 @@ public class UsuarioDAO {
 
 	public void validarUsuario() {
 		String datoObtenidoUsuario = JOptionPane.showInputDialog("Usuario:");
-		String datoobtenidoContraseña = JOptionPane.showInputDialog("Contraseña:");
+		String datoObtenidoContraseña = JOptionPane.showInputDialog("Contraseña:");
 
 		try {
 			final PreparedStatement st = con.prepareStatement("SELECT NOMBRE_USUARIO, CONTRASEÑA FROM USUARIOS");
@@ -31,7 +31,7 @@ public class UsuarioDAO {
 					String usuario = resultSet.getString("NOMBRE_USUARIO");
 					String contraseña = resultSet.getString("CONTRASEÑA");
 
-					if (datoObtenidoUsuario.equals(usuario) && datoobtenidoContraseña.equals(contraseña)) {
+					if (datoObtenidoUsuario.equals(usuario) && datoObtenidoContraseña.equals(contraseña)) {
 						JOptionPane.showMessageDialog(null, "Se logueo correctamente!",
 								  "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 						return;

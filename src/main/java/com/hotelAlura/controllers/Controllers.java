@@ -1,79 +1,79 @@
 package com.hotelAlura.controllers;
 
+import java.sql.Connection;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import com.hotelAlura.DAO.HuespedDAO;
 import com.hotelAlura.DAO.ReservaDAO;
+import com.hotelAlura.DAO.UsuarioDAO;
+import com.hotelAlura.factory.ConnectionFactory;
 
 public class Controllers {
 	
+	private final static Connection con = new ConnectionFactory().recibeConeccion();
 	Scanner scan = new Scanner (System.in);
+	HuespedDAO huesped = new HuespedDAO(con);
+	ReservaDAO reserva = new ReservaDAO(con);
+	UsuarioDAO usuario = new UsuarioDAO(con);
 	
-	public void verOpciones(HuespedDAO huesped, ReservaDAO reserva) {
-		System.out.println("Que desea hacer? Ingrese:");
-		System.out.println("1 -> Iniciar una reserva.");
-		System.out.println("2 -> Anular una reserva.");
-		System.out.println("3 -> Modificar datos de un huesped.");
-		System.out.println("4 -> Modificar datos de una reserva.");
-		System.out.println("5 -> Ver listados.");
-		System.out.println("6 -> Cerrar sesion y salir del programa.");
-		int seleccion = scan.nextInt();
+	public void verOpciones() {
+		String seleccion = JOptionPane.showInputDialog(null,"Seleccione que desea hacer.",
+				   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
+				  new Object[] { "Iniciar una reserva","Anular una reserva", "Modificar datos de un huesped",
+						  "Modificar datos de una reserva", "Ver listados","Cerrar sesion y salir del programa", },
+				  			"Iniciar una reserva").toString();
 		switch (seleccion) {
-		case 1:
+		case "Iniciar una reserva":
 			int nroHuesped = huesped.nuevoHuesped();	
-			System.out.println("Ahora los datos para su reserva");	
-			int nroReserva = reserva.nuevaReserva(nroHuesped);
-			verOpciones(huesped, reserva);
+			reserva.nuevaReserva(nroHuesped);
+			verOpciones();
 			break;
-		case 2:
-			System.out.println("¿Que reserva desea eliminar?");
+		case "Anular una reserva":
 			reserva.verListadoDeReservas();
-			System.out.println("Ingrese el numero de ID de la reserva a eliminar:");
-			int id = scan.nextInt();
+			int id=Integer.parseInt(JOptionPane.showInputDialog("¿Que reserva desea eliminar?\nIngrese el numero de ID de la reserva a eliminar"));
 			reserva.eliminarReserva(id);
-			verOpciones(huesped, reserva);
+			verOpciones();
 			break;
-		case 3:
+		case "Modificar datos de un huesped":
 			huesped.modificarHuesped();
-			verOpciones(huesped, reserva);
+			verOpciones();
 			break;
-		case 4:
+		case "Modificar datos de una reserva":
 			reserva.modificarReserva();
-			verOpciones(huesped, reserva);
+			verOpciones();
 			break;
-		case 5:
-			seleccionListados(huesped, reserva);
+		case "Ver listados":
+			seleccionListados();
 			break;
-		case 6:
+		case "Cerrar sesion y salir del programa":
 			System.exit(0);
 			break;
-
-		default:
-			System.out.println("No ingreso ningun numero de la lista. Vuelva a intentar");
-			verOpciones(huesped, reserva);
 		}
 	}
 
-	public void seleccionListados(HuespedDAO huesped, ReservaDAO reserva) {
-		System.out.println("1 -> Ver listado de huespedes.");
-		System.out.println("2 -> Ver listado de reservas.");
-		System.out.println("3 -> Volver a las opciones.");
-		int seleccion = scan.nextInt();
+	public void seleccionListados() {
+		String seleccion = JOptionPane.showInputDialog(null,"Seleccione que desea hacer.",
+				   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
+				  new Object[] {"Ver listado de huespedes","Ver listado de reservas", "Volver a las opciones",},
+				  "Ver listado de reservas").toString();
 		switch (seleccion) {
-		case 1:
+		case "Ver listado de huespedes":
 			huesped.verListadoDeHuespedes();
-			verOpciones(huesped, reserva);
+			verOpciones();
 			break;
-		case 2:
+		case "Ver listado de reservas":
 			reserva.verListadoDeReservas();
-			verOpciones(huesped, reserva);
+			verOpciones();
 			break;
-		case 3:
-			verOpciones(huesped, reserva);
+		case "Volver a las opciones":
+			verOpciones();
 			break;
-		default:
-			System.out.println("No ingreso ningun numero de la lista. Vuelva a intentar");
-			seleccionListados(huesped, reserva);
 		}
+	}
+
+	public void validaUsuario() {
+		usuario.validarUsuario();
 	}
 }

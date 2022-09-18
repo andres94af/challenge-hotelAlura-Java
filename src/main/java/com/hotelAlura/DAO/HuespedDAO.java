@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import com.hotelAlura.modelo.Huespedes;
 
 public class HuespedDAO {
@@ -23,30 +25,23 @@ public class HuespedDAO {
 
 	// CREA UN NUEVO HUESPED Y DEVUELVE EL NUMERO DE ID
 	public int nuevoHuesped() {
-		System.out.println("Comencemos...");
-		System.out.println("Primero los datos del huesped.");
+		JOptionPane.showMessageDialog(null, "Primero ingresará los datos del huesped","Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 		int resultado = 0;
 		try {
 			final PreparedStatement st = con
 					.prepareStatement("INSERT INTO HUESPEDES(NOMBRE,APELLIDO,FECHA_NACIMIENTO,NACIONALIDAD,TELEFONO) "
 							+ "VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			System.out.println("Ingrese nombre:");
-			st.setString(1, scan.nextLine());
-			System.out.println("Ingrese apellido:");
-			st.setString(2, scan.nextLine());
-			System.out.println("Ingrese fecha de nacimiento (AAA-MM-DD):");
-			st.setString(3, scan.nextLine());
-			System.out.println("Ingrese nacionalidad:");
-			st.setString(4, scan.nextLine());
-			System.out.println("Ingrese telefono(xxxxxxxxx):");
-			st.setString(5, scan.nextLine());
+			st.setString(1, JOptionPane.showInputDialog("Ingrese nombre del huesped:"));
+			st.setString(2, JOptionPane.showInputDialog("Ingrese apellido:"));
+			st.setString(3, JOptionPane.showInputDialog("Ingrese fecha de nacimiento (AAA-MM-DD):"));
+			st.setString(4, JOptionPane.showInputDialog("Ingrese nacionalidad:"));
+			st.setString(5, JOptionPane.showInputDialog("Ingrese telefono de contacto:"));
 
 			try (st) {
 				st.execute();
 				ResultSet resultSet = st.getGeneratedKeys();
 				while (resultSet.next()) {
 					int int1 = resultSet.getInt(1);
-					System.out.println("Se creo el huesped con ID: " + int1);
 					return resultado = int1;
 				}
 			}
@@ -80,27 +75,26 @@ public class HuespedDAO {
 
 	// MODIFICA LOS DATOS DEL HUESPED
 	public void modificarHuesped() {
-		System.out.println("¿Que huesped de la lista desea modificar?");
 		verListadoDeHuespedes();
-		System.out.println("Ingrese numero ID del huesped a modificar:");
-		int id = new Scanner(System.in).nextInt();
-		System.out.println("Ingrese que campo desea modificar:");
-		String columna = new Scanner(System.in).nextLine();
+		int id=Integer.parseInt(JOptionPane.showInputDialog("¿Que huesped de la lista desea modificar?\n        Ingrese el numero de ID:"));
+		String columna = JOptionPane.showInputDialog(null,"Seleccione el campo a modificar:",
+				   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
+				  new Object[] { "Nombre", "Apellido", "Fecha_Nacimiento", "Nacionalidad", "Telefono"},"Nombre").toString().toLowerCase();
 
 		try {
 			final PreparedStatement st = con
 					.prepareStatement("UPDATE HUESPEDES SET " + columna + " = ? WHERE ID = " + id);
 			System.out.println("Ingrese nuevo valor de " + columna + ":");
-			st.setString(1, new Scanner(System.in).nextLine());
+			st.setString(1, JOptionPane.showInputDialog("Ingrese nuevo valor de " + columna + ":"));
 
 			try (st) {
 				st.execute();
 				int resultSet = st.getUpdateCount();
 				System.out.println(resultSet);
 				if (resultSet == 1) {
-					System.out.println("Se modifico correctamente el huesped con ID: " + id);
+					JOptionPane.showMessageDialog(null, "Se modifico correctamente la el huesped con ID: " + id,"Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					System.out.println("No se modifico. Hubo un error intente luego.");
+					JOptionPane.showMessageDialog(null, "No se pudo modificar satisfactoriamente, intente luego.","Hotel Alura", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		} catch (SQLException e) {
