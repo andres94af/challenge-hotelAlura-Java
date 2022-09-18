@@ -22,7 +22,7 @@ public class Controllers {
 		String seleccion = JOptionPane.showInputDialog(null,"Seleccione que desea hacer.",
 				   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
 				  new Object[] { "Iniciar una reserva","Anular una reserva", "Modificar datos de un huesped",
-						  "Modificar datos de una reserva", "Ver listados","Cerrar sesion y salir del programa", },
+						  "Modificar datos de una reserva", "Ver listados","Cerrar sesion y salir", },
 				  			"Iniciar una reserva").toString();
 		switch (seleccion) {
 		case "Iniciar una reserva":
@@ -47,8 +47,14 @@ public class Controllers {
 		case "Ver listados":
 			seleccionListados();
 			break;
-		case "Cerrar sesion y salir del programa":
-			System.exit(0);
+		case "Cerrar sesion y salir":
+			int resp=JOptionPane.showConfirmDialog(null,"¿Esta seguro que quiere salir?");
+		      if (JOptionPane.OK_OPTION == resp){
+		   System.exit(0);
+		 }
+		      else{
+		    verOpciones();
+		   }
 			break;
 		}
 	}

@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -34,18 +33,18 @@ public class ReservaDAO {
 					.prepareStatement("INSERT INTO RESERVAS(HUESPED, FECHA_ENTRADA,FECHA_SALIDA, VALOR, FORMA_PAGO) "
 							+ "VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			st.setInt(1, id);
-			String fechaIngreso = JOptionPane.showInputDialog("Ingrese fecha de ingreso(AAAA-MM-DD):");
+			String fechaIngreso = JOptionPane.showInputDialog("Ingrese fecha de ingreso (AAAA-MM-DD):");
 			LocalDate fecha1 = LocalDate.parse(fechaIngreso);
 			st.setString(2, fechaIngreso);
 
-			String fechaSalida = JOptionPane.showInputDialog("Ingrese fecha de salida(AAAA-MM-DD):");
+			String fechaSalida = JOptionPane.showInputDialog("Ingrese fecha de salida (AAAA-MM-DD):");
 			LocalDate fecha2 = LocalDate.parse(fechaSalida);
 			st.setString(3, fechaSalida);
 
 			int dif = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
 			st.setInt(4, dif * valorPorDia);
 
-			st.setString(5, JOptionPane.showInputDialog(null,"Seleccione forma de pago",
+			st.setString(5, JOptionPane.showInputDialog(null,"Seleccione forma de pago:",
 					   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
 						  new Object[] { "Efectivo","Tarjeta", "Transferencia"},"Efectivo").toString());
 
@@ -133,15 +132,21 @@ public class ReservaDAO {
 	// MODIFICA LOS DATOS DEL HUESPED
 	public void modificarReserva() {
 		verListadoDeReservas();
-		int id=Integer.parseInt(JOptionPane.showInputDialog("¿Que reserva de la lista desea modificar?\n        Ingrese el numero de ID:"));
+		int id=Integer.parseInt(JOptionPane.showInputDialog("¿Que reserva de la lista desea modificar?\n          Ingrese el numero de ID:"));
 		String columna = JOptionPane.showInputDialog(null,"Seleccione el campo a modificar:",
 				   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
-				  new Object[] { "Fecha_Entrada","Fecha_Salida", "Forma_Pago",},"Forma_Pago").toString().toLowerCase();
+				  new Object[] { "Fecha_Entrada","Fecha_Salida", "Forma_Pago",},"Fecha_Entrada").toString().toLowerCase();
 
 		try {
-			final PreparedStatement st = con
-					.prepareStatement("UPDATE RESERVAS SET " + columna + " = ? WHERE ID = " + id);
-			st.setString(1, JOptionPane.showInputDialog("Ingrese nuevo valor de " + columna + ":"));
+			final PreparedStatement st = con.prepareStatement("UPDATE RESERVAS SET " + columna + " = ? WHERE ID = " + id);
+			
+			if (columna.equals("forma_pago")) {
+				st.setString(1, JOptionPane.showInputDialog(null,"Seleccione nueva forma de pago:",
+						   "Hotel Alura", JOptionPane.QUESTION_MESSAGE, null,
+							  new Object[] { "Efectivo","Tarjeta", "Transferencia"},"Efectivo").toString());
+			}else {
+				st.setString(1, JOptionPane.showInputDialog("Ingrese nuevo valor de : " + columna));
+			}
 
 			try (st) {
 				st.execute();

@@ -14,15 +14,17 @@ public class PruebaControllers {
 		HuespedDAO huesped = new HuespedDAO(con);
 		ReservaDAO reserva = new ReservaDAO(con);
 		
-//		controllers.seleccionListados(huesped, reserva);
+//		controllers.seleccionListados();
 		
-//		controllers.verOpciones(huesped, reserva);
+//		controllers.verOpciones();
 		
 //		huesped.modificarHuesped();
 		
+//		huesped.verListadoDeHuespedes();
+		
 //		reserva.modificarReserva();
 		
-		reserva.modificarReserva();
+//		reserva.verListadoDeReservas();
 		
 	}
 }

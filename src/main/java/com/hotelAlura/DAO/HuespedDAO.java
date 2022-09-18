@@ -84,7 +84,11 @@ public class HuespedDAO {
 		try {
 			final PreparedStatement st = con
 					.prepareStatement("UPDATE HUESPEDES SET " + columna + " = ? WHERE ID = " + id);
-			System.out.println("Ingrese nuevo valor de " + columna + ":");
+			switch (columna) {
+			case "fecha_nacimiento":
+				columna = "fecha de nacimiento";
+				break;
+			}
 			st.setString(1, JOptionPane.showInputDialog("Ingrese nuevo valor de " + columna + ":"));
 
 			try (st) {
@@ -92,7 +96,7 @@ public class HuespedDAO {
 				int resultSet = st.getUpdateCount();
 				System.out.println(resultSet);
 				if (resultSet == 1) {
-					JOptionPane.showMessageDialog(null, "Se modifico correctamente la el huesped con ID: " + id,"Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Se modifico correctamente el huesped con ID: " + id,"Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "No se pudo modificar satisfactoriamente, intente luego.","Hotel Alura", JOptionPane.ERROR_MESSAGE);
 				}
