@@ -14,7 +14,7 @@ public class PruebaControllers {
 		HuespedDAO huesped = new HuespedDAO(con);
 		ReservaDAO reserva = new ReservaDAO(con);
 		
-//		controllers.seleccionListados();
+		controllers.seleccionListados();
 		
 //		controllers.verOpciones();
 		
